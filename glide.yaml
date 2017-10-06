@@ -1,0 +1,9 @@
+package: github.com/alyyousuf7/gocash
+import:
+- package: github.com/mattn/go-sqlite3
+  version: ~1.2.0
+- package: github.com/spf13/cobra
+- package: github.com/olekukonko/tablewriter
+- package: github.com/mitchellh/go-homedir
+- package: github.com/boltdb/bolt
+  version: ~1.3.1
