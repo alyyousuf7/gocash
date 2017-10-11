@@ -22,14 +22,12 @@ var (
 		Use:   os.Args[0],
 		Short: "Petty cash summary",
 		PersistentPreRunE: func(cmd *cobra.Command, args []string) error {
-			homeDir, err := homedir.Dir()
+			configPath, err := cmd.Flags().GetString("config")
 			if err != nil {
 				return err
 			}
 
-			configFile := path.Join(homeDir, ".gocash")
-
-			config, err := loadConfiguration(configFile)
+			config, err := loadConfiguration(configPath)
 			if err != nil {
 				return err
 			}
@@ -49,6 +47,14 @@ var (
 )
 
 func init() {
+	homeDir, err := homedir.Dir()
+	if err != nil {
+		panic(err)
+	}
+
+	configPath := path.Join(homeDir, ".gocash.yml")
+
+	mainCmd.PersistentFlags().StringP("config", "c", configPath, "Config file path")
 	mainCmd.AddCommand(
 		debitCmd,
 		creditCmd,
