@@ -50,7 +50,8 @@ var (
 
 func init() {
 	mainCmd.AddCommand(
-		addCmd,
+		debitCmd,
+		creditCmd,
 		removeCmd,
 	)
 }

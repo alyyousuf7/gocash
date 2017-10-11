@@ -1,9 +1,9 @@
 package sqlite
 
 import (
-	"time"
-	"log"
 	"fmt"
+	"log"
+	"time"
 )
 
 type Transaction struct {

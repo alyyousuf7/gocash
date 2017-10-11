@@ -11,18 +11,32 @@ import (
 )
 
 var (
-	addCmd = &cobra.Command{
-		Use:   "add <amount> <note>",
-		Short: "Add a transaction",
-		RunE:  Add,
+	debitCmd = &cobra.Command{
+		Use:   "debit <amount> <note>",
+		Short: "Add a debit transaction",
+		RunE:  Debit,
+	}
+	creditCmd = &cobra.Command{
+		Use:   "credit <amount> <note>",
+		Short: "Add a credit transaction",
+		RunE:  Credit,
 	}
 )
 
 func init() {
-	addCmd.Flags().StringP("time", "t", "", "Time (3:02pm)")
+	debitCmd.Flags().StringP("time", "t", "", "Time (defaults to current time)")
+	creditCmd.Flags().StringP("time", "t", "", "Time (defaults to current time)")
 }
 
-func Add(cmd *cobra.Command, args []string) error {
+func Debit(cmd *cobra.Command, args []string) error {
+	return Add(cmd, args, false)
+}
+
+func Credit(cmd *cobra.Command, args []string) error {
+	return Add(cmd, args, true)
+}
+
+func Add(cmd *cobra.Command, args []string, credit bool) error {
 	if len(args) != 2 {
 		return fmt.Errorf("%s needs amount and note", os.Args[0])
 	}
@@ -32,8 +46,12 @@ func Add(cmd *cobra.Command, args []string) error {
 		return fmt.Errorf("Could not parse amount")
 	}
 
-	if amount == 0 {
+	if amount <= 0 {
 		return fmt.Errorf("Amount should be greater than 0")
+	}
+
+	if credit {
+		amount = -amount
 	}
 
 	note := args[1]

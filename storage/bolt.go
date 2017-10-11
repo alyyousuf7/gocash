@@ -5,8 +5,8 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/alyyousuf7/gocash/transaction"
 	"github.com/alyyousuf7/gocash/storage/bolt"
+	"github.com/alyyousuf7/gocash/transaction"
 )
 
 type BoltAdapter struct {
