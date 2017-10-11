@@ -10,24 +10,20 @@ import (
 
 var (
 	removeCmd = &cobra.Command{
-		Use:   "rm",
+		Use:   "rm <transaction id>",
 		Short: "Remove a transaction",
 		RunE:  Remove,
 	}
 )
 
-func init() {
-	removeCmd.Flags().String("id", "", "Transaction ID")
-}
-
 func Remove(cmd *cobra.Command, args []string) error {
-	if len(args) > 0 {
-		return fmt.Errorf("%s command does not take any arguments", os.Args[0])
+	if len(args) != 1 {
+		return fmt.Errorf("%s only needs trasaction ID to remove", os.Args[0])
 	}
 
-	id, err := cmd.Flags().GetString("id")
-	if err != nil {
-		return err
+	id := args[0]
+	if len(id) == 0 {
+		return fmt.Errorf("Empty ID was detected")
 	}
 
 	if err := app.RemoveTransaction(id); err != nil {
